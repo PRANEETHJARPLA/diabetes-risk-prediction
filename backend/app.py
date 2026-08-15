@@ -1,10 +1,16 @@
-import pandas as pd
 """
 Diabetes Risk Prediction - FastAPI Backend
 Run from project root: uvicorn backend.app:app --reload
 """
 
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+import joblib
+import numpy as np
+import pandas as pd
+
+app = FastAPI(title="Diabetes Risk Prediction API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -12,7 +18,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)app = FastAPI(title="Diabetes Risk Prediction API")
+)
 
 # Load model artifacts once at startup
 model = joblib.load("models/diabetes_model.pkl")
@@ -54,7 +60,7 @@ def root():
 
 @app.post("/predict")
 def predict(data: PatientData):
-    input_dict = data.dict()
+    input_dict = data.model_dump()
     input_array = pd.DataFrame([[input_dict[feat] for feat in feature_order]], columns=feature_order)
     input_scaled = scaler.transform(input_array)
 
