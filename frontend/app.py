@@ -6,7 +6,7 @@ Run from project root: streamlit run frontend/app.py
 import streamlit as st
 import requests
 
-API_URL = "http://127.0.0.1:8000/predict"
+API_URL = "https://diabetes-risk-prediction-sis3.onrender.com/predict"
 
 st.set_page_config(page_title="Diabetes Risk Prediction", page_icon="🩺", layout="centered")
 
